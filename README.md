@@ -1,4 +1,4 @@
-# make_my_day
+# mmd
 
 A new Flutter project.
 

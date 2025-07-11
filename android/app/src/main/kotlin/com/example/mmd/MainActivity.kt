@@ -1,4 +1,4 @@
-package com.example.make_my_day
+package com.example.mmd
 
 import io.flutter.embedding.android.FlutterActivity
 
