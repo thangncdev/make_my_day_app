@@ -28,11 +28,41 @@ class _QuoteListScreenState extends State<QuoteListScreen> {
   }
 
   void _deleteQuote(int index) async {
-    await WidgetService.deleteQuote(index);
-    await _loadQuotes();
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Đã xóa quote!')));
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(
+          'Xác nhận xóa',
+          style: TextStyle(fontFamily: 'ShantellSans'),
+        ),
+        content: const Text(
+          'Bạn có chắc chắn muốn xóa quote này không?',
+          style: TextStyle(fontFamily: 'ShantellSans'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Hủy'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Xóa'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await WidgetService.deleteQuote(index);
+      await _loadQuotes();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Đã xóa quote!')));
+    }
   }
 
   void _editQuote(int index) async {
@@ -73,6 +103,13 @@ class _QuoteListScreenState extends State<QuoteListScreen> {
         context,
       ).showSnackBar(const SnackBar(content: Text('Đã cập nhật quote!')));
     }
+  }
+
+  void _pinQuote(int index) async {
+    await WidgetService.pinQuote(index);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Đã ghim quote xuống widget!')),
+    );
   }
 
   @override
@@ -126,6 +163,14 @@ class _QuoteListScreenState extends State<QuoteListScreen> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.push_pin_rounded,
+                            color: Colors.orange,
+                          ),
+                          tooltip: 'Ghim xuống widget',
+                          onPressed: () => _pinQuote(index),
+                        ),
                         IconButton(
                           icon: const Icon(
                             Icons.edit_rounded,

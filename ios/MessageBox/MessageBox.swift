@@ -44,11 +44,31 @@ struct SimpleEntry: TimelineEntry {
 
 struct MessageBoxEntryView : View {
     var entry: Provider.Entry
-
-    var body: some View {
-        VStack {
-            Text(entry.text)
+    
+    // New: Add the helper function.
+    var bundle: URL {
+        let bundle = Bundle.main
+               if bundle.bundleURL.pathExtension == "appex" {
+                   // Peel off two directory levels - MY_APP.app/PlugIns/MY_APP_EXTENSION.appex
+                   var url = bundle.bundleURL.deletingLastPathComponent().deletingLastPathComponent()
+                url.append(component: "Frameworks/App.framework/flutter_assets")
+                 return url
         }
+        return bundle.bundleURL
+    }
+    
+    // New: Register the font.
+    init(entry: Provider.Entry){
+      self.entry = entry
+      CTFontManagerRegisterFontsForURL(bundle.appending(path: "assets/fonts/ShantellSans-Regular.ttf") as CFURL, CTFontManagerScope.process, nil)
+    }
+    
+    var body: some View {
+        
+                VStack {
+                    Text(entry.text).font(Font.custom("ShantellSans-Regular", size: 16))
+                        .foregroundColor(.black)
+                }
     }
 }
 
