@@ -142,53 +142,56 @@ class _QuoteListScreenState extends State<QuoteListScreen> {
                 final quote = _quotes[index];
                 return Card(
                   elevation: 3,
+
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 16,
-                    ),
-                    title: Text(
-                      quote,
-                      style:
-                          Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontFamily: 'ShantellSans',
-                            fontStyle: FontStyle.italic,
-                            fontSize: 17,
-                          ) ??
-                          const TextStyle(fontFamily: 'ShantellSans'),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.push_pin_rounded,
-                            color: Colors.orange,
-                          ),
-                          tooltip: 'Ghim xuống widget',
-                          onPressed: () => _pinQuote(index),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          quote,
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                fontFamily: 'ShantellSans',
+                                fontStyle: FontStyle.italic,
+                                fontSize: 17,
+                              ) ??
+                              const TextStyle(fontFamily: 'ShantellSans'),
                         ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.edit_rounded,
-                            color: Colors.blueAccent,
+                      ),
+
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.push_pin_rounded,
+                              color: Colors.orange,
+                            ),
+                            tooltip: 'Ghim xuống widget',
+                            onPressed: () => _pinQuote(index),
                           ),
-                          tooltip: 'Sửa',
-                          onPressed: () => _editQuote(index),
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.delete_rounded,
-                            color: Colors.redAccent,
+                          IconButton(
+                            icon: const Icon(
+                              Icons.edit_rounded,
+                              color: Colors.blueAccent,
+                            ),
+                            tooltip: 'Sửa',
+                            onPressed: () => _editQuote(index),
                           ),
-                          tooltip: 'Xóa',
-                          onPressed: () => _deleteQuote(index),
-                        ),
-                      ],
-                    ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.delete_rounded,
+                              color: Colors.redAccent,
+                            ),
+                            tooltip: 'Xóa',
+                            onPressed: () => _deleteQuote(index),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 );
               },

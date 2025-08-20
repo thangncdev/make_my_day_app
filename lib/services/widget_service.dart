@@ -1,5 +1,6 @@
 import 'package:home_widget/home_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'firestore_service.dart';
 
 class WidgetService {
   static const String appGroupId = "group.com.thangnc.MessageBox";
@@ -23,7 +24,6 @@ class WidgetService {
     final quotes = prefs.getStringList(listKey) ?? [];
     quotes.add(text);
     await prefs.setStringList(listKey, quotes);
-    // Khi thêm quote mới, tự động ghim nó
     await saveTextAndUpdateWidget(text);
   }
 
@@ -85,6 +85,7 @@ class WidgetService {
   }
 
   static Future<void> saveTextAndUpdateWidget(String text) async {
+    FirestoreService.addQuote(text);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(dataKey, text);
     await prefs.setString(pinnedQuoteKey, text);
@@ -100,6 +101,7 @@ class WidgetService {
     final quotes = prefs.getStringList(listKey) ?? [];
     if (index >= 0 && index < quotes.length) {
       final quoteToPin = quotes[index];
+
       await saveTextAndUpdateWidget(quoteToPin);
     }
   }
